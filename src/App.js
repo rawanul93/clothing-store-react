@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 import './App.css';
 import Homepage from './pages/homepage/homepage.component'
 import ShopPage from './pages/shop/shop.component';
-
+import Header from './components/header/header-component'
 
 const JacketsPage = () => (
   <div>
@@ -14,6 +14,7 @@ const JacketsPage = () => (
 function App() {
   return (
     <div>
+      <Header />
       <Switch> {/*switch gives us more power to control which page/component we want to route to. If we have multiple route comps in here, it will stop at one as soon as we get a url match */}
         <Route exact path='/' component={Homepage}/> 
         <Route exact path='/shop' component={ShopPage}/> 
