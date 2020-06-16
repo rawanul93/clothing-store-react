@@ -7,3 +7,7 @@ a {
     text-decoration: none;
     color: black;
 }
+
+* { 
+    box-sizing: border-box; /*getting rid off extra padding which browsers add automatically. This is for input field boxes in this case. Check end of lecture 88. */
+}
