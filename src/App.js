@@ -33,7 +33,7 @@ class App extends React.Component {
               ...snapShot.data() //the .data() is what gives us the actual data.
             }
           })
-          console.log(this.state);
+          // console.log(this.state);
         });
         this.setState({currentUser: userAuth});
       }
