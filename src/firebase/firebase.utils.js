@@ -15,6 +15,32 @@ const config ={
 
 firebase.initializeApp(config);
 
+export const createUserProfileDocument = async (userAuth, additionalData) => { //when we sign in with google, we get a user object in return. This function will make use of that returned object and add it to our users collection in our firebase
+    if(!userAuth) return; //when the user signs out we actually get a null. So we're saying that if we get a null i.e. when the userAuth doesnt exist, we'll return and exit this function
+    
+    const userRef = firestore.doc(`users/${userAuth.uid}`); //getting the reference for the user doc in the users collection in our database.
+    const snapShot = await userRef.get(); //this executes the above query and gives us actual data regarding the document. It will return something even if the document being referenced doesnt exist. 
+
+    if(!snapShot.exists) { //the snapshot has a property called exists which is true if such a doc exists in our firestore and vice versa.
+        const { displayName, email } = userAuth; //if it doesnt exist we'll still get that userAuth object of the user that signed in with google. So from that object we'll get the email and the displayName too.
+        const createdAt = new Date();
+        
+        try {
+            await userRef.set({ //set writes to the document referred to by the userRef. If it doesnt exist yet, it creates it for us.
+                displayName,
+                email,
+                createdAt,
+                ...additionalData
+            }) 
+            
+        } catch (error) {
+            console.log('error creating user', error.message)
+        }
+    }
+    return userRef; //we're returning this because we might need it for something more than just creating it.
+}
+
+
 export const auth = firebase.auth(); //exporting the auth and the firestore to later import whereever we may need it.
 export const firestore = firebase.firestore();
 
