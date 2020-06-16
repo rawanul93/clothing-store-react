@@ -57,7 +57,7 @@ class SignIn extends React.Component {
           />
           <div className='buttons'>
             <CustomButton type="submit"> Sign in </CustomButton> {/*the Sign In here gets passed as children */}
-            <CustomButton isGoogleSignIn onClick={signInWithGoogle}> Sign in with Google </CustomButton> {/*the Sign In here gets passed as children */}
+            <CustomButton type='button' isGoogleSignIn onClick={signInWithGoogle}> Sign in with Google </CustomButton> {/*the Sign In here gets passed as children */}
           </div>
         </form>
       </div>
