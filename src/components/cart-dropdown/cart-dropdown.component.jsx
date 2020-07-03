@@ -1,13 +1,14 @@
 import React from 'react'
 import CustomButton from '../custom-button/custom-button.component'
 import CartItem from '../cart-item/cart-item.component'
+import { selectCartItems } from '../../redux/cart/cart.selectors'
 
 import './cart-dropdown.styles.scss'
 
 import { connect } from 'react-redux';
 
-const mapState = ({ cart: { cartItems } }) => ({
-    cartItems
+const mapState = (state) => ({
+    cartItems: selectCartItems(state) //using selector here will make sure that the cartItems dropdown will not get rerendered every time the state changes for things that are not related to out cartDropdown
 });
 
 const CartDropdown = ({ cartItems }) => {
