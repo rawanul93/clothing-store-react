@@ -4,15 +4,24 @@ import { connect } from 'react-redux';
 
 import './App.css';
 
+//components and pages
 import Homepage from './pages/homepage/homepage.component'
 import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header-component'
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component'
+import CheckoutPage from './pages/checkout/checkout.component';
+
+//firebase and redux
 import { auth, createUserProfileDocument } from './firebase/firebase.utils'
 import { setCurrentUser } from './redux/user/user.actions';
 
-const mapState =({ user }) => ({ //destructuring from state
-  currentUser: user.currentUser //geting currentUser state from redux cause we want to 
+//selectors
+import { createStructuredSelector } from 'reselect'
+import { selectCurrentUser } from './redux/user/user.selectors';
+
+
+const mapState = createStructuredSelector ({ 
+  currentUser: selectCurrentUser
 })
 
 const mapDispatch = dispatch => ({ 
@@ -55,7 +64,8 @@ class App extends React.Component {
         <Header />
         <Switch> {/*switch gives us more power to control which page/component we want to route to. If we have multiple route comps in here, it will stop at one as soon as we get a url match */}
           <Route exact path='/' component={Homepage}/> 
-          <Route exact path='/shop' component={ShopPage}/> 
+          <Route path='/shop' component={ShopPage}/> 
+          <Route exact path='/checkout' component={CheckoutPage}/>
           <Route exact path='/signin' render={() => this.props.currentUser? (<Redirect to='/'/>) : (<SignInAndSignUpPage />)}/> {/* render is a javascript invocation telling what component to return. It can be a function so we can control what to render. Here were checking if someone is already signed in or not. If so then we wont ever let them access the sign in page. It will always redirect them to home page. */}
         </Switch>
         

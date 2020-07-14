@@ -1,14 +1,20 @@
 import React from 'react';
-import { connect } from 'react-redux'
-import { toggleCartHidden } from '../../redux/cart/cart.actions';
-import { selectCartItemsCount } from '../../redux/cart/cart.selectors';
-
 import { ReactComponent as ShoppingIcon } from '../../assets/shopping-bag.svg';
 
 import './cart-icon.styles.scss';
 
-const mapState = (state) => ({
-    itemCount: selectCartItemsCount(state) //so we're passing the whole state. The selectCartItemsCount references the selectCartItems selector, which then references selectCart where finally this state is passed on to. The selectCart gets cart from the state and then selectCartItems uses that to get cartItems and that is memoized. Then selectCartItemsCount uses cartItems and calculates the itemCount and returns it for us. This is also memoized.
+//redux
+import { connect } from 'react-redux'
+import { toggleCartHidden } from '../../redux/cart/cart.actions';
+
+//selectors
+import { createStructuredSelector } from 'reselect'
+import { selectCartItemsCount } from '../../redux/cart/cart.selectors';
+
+
+
+const mapState = createStructuredSelector({
+    itemCount: selectCartItemsCount //so we're passing the whole state. The selectCartItemsCount references the selectCartItems selector, which then references selectCart where finally this state is passed on to. The selectCart gets cart from the state and then selectCartItems uses that to get cartItems and that is memoized. Then selectCartItemsCount uses cartItems and calculates the itemCount and returns it for us. This is also memoized.
 
     // itemCount: cartItems.reduce((acc, item) => acc + item.quantity, 0) //reduce method. Here acc is the accumulated value that we set to 0 initially. For each item it will add the quantiy number to it until its finished.
     //this is called a Selector. Because we are getting the whole state object and pulling off a small portion/slice from that state. Like getting the cart from state, then the cartItems and then reducing over indivisual items to compute a new value based off of the state.
