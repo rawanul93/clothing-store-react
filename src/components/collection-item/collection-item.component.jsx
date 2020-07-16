@@ -11,6 +11,7 @@ const mapDispatch = dispatch => ({
 })
 
 const CollectionItem = ({ item, addCartItem }) => {
+    console.log(item);
     const { name, price, imageUrl } = item;
     return (
         <div className='collection-item'>
