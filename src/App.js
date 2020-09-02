@@ -12,18 +12,17 @@ import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up
 import CheckoutPage from './pages/checkout/checkout.component';
 
 //firebase and redux
-import { auth, createUserProfileDocument, addCollectionsAndDocuments } from './firebase/firebase.utils'
+import { auth, createUserProfileDocument } from './firebase/firebase.utils'
 import { setCurrentUser } from './redux/user/user.actions';
 
 //selectors
 import { createStructuredSelector } from 'reselect'
 import { selectCurrentUser } from './redux/user/user.selectors';
-import { selectCollectionsForPreview } from './redux/shop/shop.selector';
+//import { selectCollectionsForPreview } from './redux/shop/shop.selector';
 
 
 const mapState = createStructuredSelector ({ 
   currentUser: selectCurrentUser,
-  collectionsArray: selectCollectionsForPreview
 })
 
 const mapDispatch = dispatch => ({ 
@@ -36,7 +35,7 @@ class App extends React.Component {
   unSubscribeFromAuth = null; //were setting a property. We need this because since onAuthStateChanged is an open connection, we need to close it whenever the component unmounts.
 
   componentDidMount() {
-    const { setCurrentUser, collectionsArray } = this.props;
+    const { setCurrentUser } = this.props;
     this.unSubscribeFromAuth = auth.onAuthStateChanged( async userAuth => { //this is a method on the auth library that we get from firebase. Inside this it takes a function where the parameter is what the user state is of the auth in our firebase project. So we can set currentUser state to this user who is logged in.
        //the onAuthStateChanged is an open connection between our app and firebase. Its a listener where whenever anything in the firebase regarding auth changes, like sign in with another account, signing out etc. It will call this function and do whatver we tell it to do here.
        //createUserProfileDocument(user); //this is creating the actual document and adding it in our firebase.
@@ -56,7 +55,7 @@ class App extends React.Component {
       }
     })
 
-    addCollectionsAndDocuments('collections', collectionsArray.map(({title, items}) => ({ title, items }))); //the second arg we're passing is destructoring title and items from each collection element like hats, shoes etc, and returning an array with just the titles and the items instead of other data which we dont even need.
+   // addCollectionsAndDocuments('collections', collectionsArray.map(({title, items}) => ({ title, items }))); //the second arg we're passing is destructoring title and items from each collection element like hats, shoes etc, and returning an array with just the titles and the items instead of other data which we dont even need.
 
   }
 

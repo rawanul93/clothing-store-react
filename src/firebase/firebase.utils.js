@@ -40,18 +40,36 @@ export const createUserProfileDocument = async (userAuth, additionalData) => { /
     return userRef; //we're returning this because we might need it for something more than just creating it.
 }
 
-export const addCollectionsAndDocuments = async (collectionKey, objectsToAdd) => { //to add data into our firebase, specifically the collections data in this case.
-    const collectionRef = firestore.collection(collectionKey); //name of the collection will be 'collection'. Bit confusing because of how we named our list of shop data 'collections'.
-
-    const batch = firestore.batch(); //we will use the batch here because each .set method is run one at a time. We cannot give it an array of collections and tell firebase to create all the docs for each all at once. It will do it one at a time. For any reason if one of these fail, we want all of it to fail so that we can actually understand what happeneded rather than having a few data missing and not knowing what went wrong.  
+export const convertCollectionsSnapshotToMap = collections => {
+    const transformedCollection = collections.docs.map(doc => {  //.docs will give us the query snapshot array.
+        const { title, items } = doc.data(); //Pulling off the items and the title. .data() lets us get the data from the snapshot.
     
-    objectsToAdd.forEach(obj => {
-        const newDocRef = collectionRef.doc() //gives us a new document ref in this collection and randoly generates an id for us. We could write it like .doc('name') and this way the id will be set as the string we pass into this.
-        batch.set(newDocRef, obj) //basically doing newDocRef.set(obj) but in batches
-    });
-
-    return await batch.commit(); //this will fire off the batch call. What it returns is a promise, when commit succeeds it resolves a void value.
+        return { //we will be returning objects for each collection item. We are also adding things that the backend data doesnt have. Like the routeName and and id.
+            routeName: encodeURI(title.toLowerCase()), //we can pass any string to encodeURI and it will give us back a string where if there are any characters that a url cannot handle (e.g. spaces, symbols), it will convert everything to a version that the url can actually read.
+            id: doc.id,
+            title,
+            items
+        }
+    })
+    //to convert the above transformedCollection into a collections object with the collection titles as the properties equal to collection data attached associated to it. 
+    return transformedCollection.reduce((accumulator, collection) => { //returning the whole array of our collections data as an object. That is how we're loading it up to our redux store.
+        accumulator[collection.title.toLowerCase()] = collection; //sets a new property in the accumulator using the title from each collection in the array we're looping over. Then sets the whole collection object to that property.
+        return accumulator; 
+    }, {}) //initial acc value is an empty object
 }
+
+// export const addCollectionsAndDocuments = async (collectionKey, objectsToAdd) => { //to add data into our firebase, specifically the collections data in this case.
+//     const collectionRef = firestore.collection(collectionKey); //name of the collection will be 'collection'. Bit confusing because of how we named our list of shop data 'collections'.
+
+//     const batch = firestore.batch(); //we will use the batch here because each .set method is run one at a time. We cannot give it an array of collections and tell firebase to create all the docs for each all at once. It will do it one at a time. For any reason if one of these fail, we want all of it to fail so that we can actually understand what happeneded rather than having a few data missing and not knowing what went wrong.  
+    
+//     objectsToAdd.forEach(obj => {
+//         const newDocRef = collectionRef.doc() //gives us a new document ref in this collection and randoly generates an id for us. We could write it like .doc('name') and this way the id will be set as the string we pass into this.
+//         batch.set(newDocRef, obj) //basically doing newDocRef.set(obj) but in batches
+//     });
+
+//     return await batch.commit(); //this will fire off the batch call. What it returns is a promise, when commit succeeds it resolves a void value.
+// }
 
 export const auth = firebase.auth(); //exporting the auth and the firestore to later import whereever we may need it.
 export const firestore = firebase.firestore();

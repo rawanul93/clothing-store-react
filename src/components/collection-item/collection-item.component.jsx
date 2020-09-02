@@ -11,7 +11,6 @@ const mapDispatch = dispatch => ({
 })
 
 const CollectionItem = ({ item, addCartItem }) => {
-    console.log(item);
     const { name, price, imageUrl } = item;
     return (
         <div className='collection-item'>
@@ -22,7 +21,7 @@ const CollectionItem = ({ item, addCartItem }) => {
                 <span className='name'>{name}</span>
                 <span className='price'>{price}</span>
             </div>
-            <CustomButton type='button' inverted onClick={() => addCartItem(item)}> Add to Cart </CustomButton>
+            <CustomButton className='custom-button' type='button' inverted onClick={() => addCartItem(item)}> Add to Cart </CustomButton>
             
         </div>
     )
