@@ -9,12 +9,8 @@ import { selectCollection } from '../../redux/shop/shop.selector';
 //components
 import CollectionItem from '../../components/collection-item/collection-item.component';
 
-const mapState = (state, ownProps) => ({ //ownProps is what this component gets as its own props. We'll use the route props we get here.
-    collection: selectCollection(ownProps.match.params.collectionId)(state) //the selectCollection returns us a createSelector which requires us to pass it the state. After, the state is passed to the createSelector it resolves itself by passing the state to another selector which we defined and ultimately get the collection state from our selectCollection.
-})
 
-
-const CollectionPage = ({ collection }) => {
+const CollectionPage = ({ collection }) => { //note we get the collection from redux.
     const { title, items } = collection;
         return (
         <div className='collection-page'>
@@ -31,5 +27,10 @@ const CollectionPage = ({ collection }) => {
         </div>
     )
 }
+
+const mapState = (state, ownProps) => ({ //ownProps is what this component gets as its own props. We'll use the route props we get here.
+    collection: selectCollection(ownProps.match.params.collectionId)(state) //the selectCollection returns us a createSelector which requires us to pass it the state. After, the state is passed to the createSelector it resolves itself by passing the state to another selector which we defined and ultimately get the collection state from our selectCollection.
+})
+
 
 export default connect(mapState)(CollectionPage);
