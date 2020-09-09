@@ -53,7 +53,7 @@ class App extends React.Component {
       else {
         setCurrentUser(userAuth); // we do this here as well because onAuthChange runs both for signing in and out. The first setCurrent user is for when user signs in and the if statement runs. The second one is when someone signs out and userAuth is null. We still want to update the state with that.
       }
-    })
+    }) //,error => console.log(error) we can write this here to handle any errors.
 
    // addCollectionsAndDocuments('collections', collectionsArray.map(({title, items}) => ({ title, items }))); //the second arg we're passing is destructoring title and items from each collection element like hats, shoes etc, and returning an array with just the titles and the items instead of other data which we dont even need.
 

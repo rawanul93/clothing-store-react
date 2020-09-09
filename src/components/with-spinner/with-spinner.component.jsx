@@ -8,7 +8,7 @@ const WithSpinner = (WrappedComponent) => {//WithSpinner is the HOC we're creati
                 <SpinnerContainer /> 
             </SpinnerOverlay>
         ) :
-        <WrappedComponent {...otherProps}/> //this way we pass the props thorugh to the component we wrap.
+        <WrappedComponent {...otherProps}/> //otherprops has all the props we originally passed into the WrappedComponent.
     }
 
     return Spinner;

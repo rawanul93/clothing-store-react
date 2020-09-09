@@ -40,7 +40,7 @@ const Header = ({ currentUser, hidden }) => { //now getting the currentUser as p
                 </OptionLink>
                 {
                     currentUser ? 
-                    <OptionLink as='div' onClick={() => auth.signOut()}>SIGN OUT</OptionLink>
+                    <OptionLink as='div' onClick={() => auth.signOut()}>SIGN OUT</OptionLink> //so if we want this to return a div we just to as='div'. Otherwise it will be a link since thats how we wrote the stuled component.
                     : 
                     <OptionLink to='/signin'>SIGN IN</OptionLink>
                 }
